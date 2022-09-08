@@ -7,3 +7,5 @@ Windows box toolset installation script
 - nmap (7.92)
 - SysinternalsSuite (Aug 16 2022)
 - BurpSuite Professional (2022.8.4)
+- Wireshark (3.6.8)
+- npcap (1.71)
