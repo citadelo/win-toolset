@@ -39,8 +39,8 @@ if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     [Environment]::SetEnvironmentVariable("PATH", $Env:PATH, [EnvironmentVariableTarget]::Machine)
 }
 echo "Doing clean up..."
-rm $toolset_url\tools\*.zip
-rm $toolset_url\tools\*.exe
+rm $toolset_path\tools\*.zip
+rm $toolset_path\tools\*.exe
 rm $citadelo_path\*.zip
 icacls $citadelo_path /inheritancelevel:e /q /c /t /grant Users:F
 echo "All done!"
