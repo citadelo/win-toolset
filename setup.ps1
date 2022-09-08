@@ -16,6 +16,10 @@ Expand-Archive .\nmap-win32.zip -DestinationPath .\ -Force
 rm .\nmap-win32.zip
 rm .\SysinternalsSuite.zip
 mv nmap-* nmap
+echo "BurpSuite needs to be installed manually"
+echo "Set the installation path to " + $citadelo_path + "\BurpSuitePro"
+echo "Starting BurpSuite installer..."
+Start-Process .\burpsuite_pro.exe -NoNewWindow -Wait
 if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     echo "Setting up PATH..."
     $Env:PATH > "C:\Users\Public\Env_Path.bak"
@@ -24,6 +28,5 @@ if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     $Env:PATH += ";C:\Program Files\citadelo\win-toolset-main\tools\SysinternalsSuite"
     [Environment]::SetEnvironmentVariable("PATH", $Env:PATH, [EnvironmentVariableTarget]::Machine)
 }
-icacls $citadelo_path /q /c /t /grant Users:F
+icacls $citadelo_path /inheritancelevel:e /q /c /t /grant Users:F
 echo "All done!"
-

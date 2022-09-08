@@ -6,3 +6,4 @@ Windows box toolset installation script
 - sslscan (2.0.15)
 - nmap (7.92)
 - SysinternalsSuite (Aug 16 2022)
+- BurpSuite Professional (2022.8.4)
