@@ -1,5 +1,6 @@
 $citadelo_path = "C:\Program Files\citadelo"
 $toolset_url = "https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip"
+$burp_url = "https://github.com/citadelo/win-toolset/releases/download/v0.1/burpsuite_pro.exe"
 if (!(Test-Path $citadelo_path)) {
     echo "Setting up citadelo dir..."
     mkdir $citadelo_path | Out-Null
@@ -16,6 +17,7 @@ Expand-Archive .\nmap-win32.zip -DestinationPath .\ -Force
 rm .\nmap-win32.zip
 rm .\SysinternalsSuite.zip
 mv nmap-* nmap
+wget $burp_url -outfile .\burpsuite_pro.exe
 echo "BurpSuite needs to be installed manually"
 echo "Set the installation path to " + $citadelo_path + "\BurpSuitePro"
 echo "Starting BurpSuite installer..."
