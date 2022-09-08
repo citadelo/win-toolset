@@ -8,6 +8,7 @@ if (!(Test-Path $citadelo_path)) {
 }
 cd $citadelo_path
 echo "Downloading tools and extracting..."
+$ProgressPreference = 'SilentlyContinue'
 wget $toolset_url -outfile .\main.zip
 Expand-Archive .\main.zip -DestinationPath .\ -Force
 cd $toolset_path\tools
