@@ -30,6 +30,9 @@ Start-Process .\burpsuite_pro.exe -NoNewWindow -Wait
 echo "BurpSuite installed!"
 echo "You can find many extensions in $toolset_path\tool\burp_extensions"
 echo "Jython can be found in $toolset_path\bin"
+echo "Installing WSL2..."
+Start-Process wsl.exe -ArgumentList "--install -d kali-linux" -NoNewWindow -Wait
+echo "WSL2 installed, reboot may be needed!"
 if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     echo "Setting up PATH..."
     $Env:PATH > "C:\Users\Public\Env_Path.bak"
