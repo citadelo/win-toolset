@@ -24,9 +24,15 @@ echo "Installing npcap..."
 echo "Npcap needs to be installed via GUI!"
 Start-Process .\npcap.exe -NoNewWindow -Wait
 echo "BurpSuite needs to be installed via GUI!"
-echo "Make sure to set the installation path to $citadelo_path\BurpSuitePro!"
 echo "Starting BurpSuite installer..."
 Start-Process .\burpsuite_pro.exe -NoNewWindow -Wait
+if (!(Test-Path C:\Users\support\AppData\Roaming\BurpSuite)) {
+    $burp_path = "C:\Users\support\AppData\Roaming\BurpSuite"
+    mkdir $burp_path
+}
+cd $toolset_path\config
+cp .\UserConfigPro.json $burp_path\ -Force
+cp .\bapps\ $burp_path\ -Recurse -Force
 echo "BurpSuite installed!"
 echo "Installing WSL2..."
 Start-Process wsl.exe -ArgumentList "--install -d kali-linux" -NoNewWindow -Wait

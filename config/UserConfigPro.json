@@ -61,6 +61,16 @@
                     "output":"ui"
                 },
                 {
+                    "bapp_serial_version":36,
+                    "bapp_uuid":"aaaa60ef945341e8a450217a54a11646",
+                    "errors":"ui",
+                    "extension_file":"bapps\\aaaa60ef945341e8a450217a54a11646\\build\\libs\\http-request-smuggler-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"HTTP Request Smuggler",
+                    "output":"ui"
+                },
+                {
                     "bapp_serial_version":20,
                     "bapp_uuid":"f9bbac8c4acf4aefa4d7dc92a991af2f",
                     "errors":"ui",
@@ -108,16 +118,6 @@
                     "extension_type":"java",
                     "loaded":true,
                     "name":"Freddy, Deserialization Bug Finder",
-                    "output":"ui"
-                },
-                {
-                    "bapp_serial_version":36,
-                    "bapp_uuid":"aaaa60ef945341e8a450217a54a11646",
-                    "errors":"ui",
-                    "extension_file":"bapps\\aaaa60ef945341e8a450217a54a11646\\build\\libs\\http-request-smuggler-all.jar",
-                    "extension_type":"java",
-                    "loaded":true,
-                    "name":"HTTP Request Smuggler",
                     "output":"ui"
                 },
                 {
