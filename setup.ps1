@@ -2,13 +2,14 @@ $citadelo_path = "C:\Program Files\citadelo"
 $toolset_url = "https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip"
 $burp_url = "https://github.com/citadelo/win-toolset/releases/download/v0.1/burpsuite_pro.exe"
 $toolset_path = "$citadelo_path\win-toolset-main"
+$ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
 if (!(Test-Path $citadelo_path)) {
     echo "Setting up citadelo dir..."
     mkdir $citadelo_path | Out-Null
 }
 cd $citadelo_path
 echo "Downloading tools and extracting..."
-$ProgressPreference = 'SilentlyContinue'
 wget $toolset_url -outfile .\main.zip
 Expand-Archive .\main.zip -DestinationPath .\ -Force
 cd $toolset_path\tools
@@ -28,7 +29,7 @@ echo "Starting BurpSuite installer..."
 Start-Process .\burpsuite_pro.exe -NoNewWindow -Wait
 if (!(Test-Path C:\Users\support\AppData\Roaming\BurpSuite)) {
     $burp_path = "C:\Users\support\AppData\Roaming\BurpSuite"
-    mkdir $burp_path
+    mkdir $burp_path | Out-Null
 }
 cd $toolset_path\config
 cp .\UserConfigPro.json $burp_path\ -Force
