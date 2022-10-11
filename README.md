@@ -19,6 +19,7 @@ Currently Zscaler blocks downloading of setup script, so it needs to be copied f
 - Wireshark (3.6.8)
 - npcap (1.71)
 - WSL 2
+- nuclei (2.7.8)
 
 ## Current list of Burp Suite extensions:
 - 403 Bypasser
@@ -37,3 +38,7 @@ Currently Zscaler blocks downloading of setup script, so it needs to be copied f
 - Turbo Intruder
 - ViewState Editor
 - HTTP Request Smuggler
+
+## Current wordlists
+- combined_directories.txt from SecLists
+- combined_words.txt from SecLists

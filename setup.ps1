@@ -2,6 +2,7 @@ $citadelo_path = "C:\Program Files\citadelo"
 $toolset_url = "https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip"
 $burp_url = "https://github.com/citadelo/win-toolset/releases/download/v0.1/burpsuite_pro.exe"
 $toolset_path = "$citadelo_path\win-toolset-main"
+$seclists_web_url = "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content"
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 if (!(Test-Path $citadelo_path)) {
@@ -38,6 +39,14 @@ echo "BurpSuite installed!"
 echo "Installing WSL2..."
 Start-Process wsl.exe -ArgumentList "--install -d kali-linux" -NoNewWindow -Wait
 echo "WSL2 installed, reboot may be needed!"
+echo "Downloading wordlists..."
+mkdir $toolset_path/wordlists
+cd $toolset_path/wordlists
+wget $seclists_web_url/combined_directories.txt -outfile combined_directories.txt
+wget $seclists_web_url/combined_words.txt -outfile combined_words.txt
+cd $toolset_path/bin
+echo "Installing nuclei templates..."
+Start-Process .\nuclei.exe -ArgumentList "-ut -silent" -NoNewWindow -Wait
 if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     echo "Setting up PATH..."
     $Env:PATH > "C:\Users\Public\Env_Path.bak"
