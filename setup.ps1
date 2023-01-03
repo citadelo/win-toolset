@@ -1,20 +1,18 @@
 $citadelo_path = "C:\Program Files\citadelo"
-$toolset_url = "https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip"
-$burp_url = "https://github.com/citadelo/win-toolset/releases/download/v0.1/burpsuite_pro.exe"
 $toolset_path = "$citadelo_path\win-toolset-main"
 $ErrorActionPreference = "Stop"
+echo "Asking for domain credentials"
+$cred = Get-Credential -UserName "domain\user" -Message "Enter your VDI credentials to continue in the domain\user format"
 if (!(Test-Path $citadelo_path)) {
     echo "Setting up citadelo dir..."
     mkdir $citadelo_path | Out-Null
 }
-echo "Asking for domain credentials"
-$cred = Get-Credential -UserName "domain\user" -Message "Enter your VDI credentials to continue in the format domain\user"
 cd $citadelo_path
 echo "Downloading tools and extracting..."
 Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip -Destination C:\Temp\main.zip}"'
 Expand-Archive C:\Temp\main.zip -DestinationPath .\ -Force
 cd $toolset_path\tools
-Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/releases/download/v0.1/burpsuite_pro.exe -Destination C:\Temp\burpsuite_pro.exe}"'
+Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/releases/download/v0.2/burpsuite_pro.exe -Destination C:\Temp\burpsuite_pro.exe}"'
 mv C:\Temp\burpsuite_pro.exe .\
 echo "Installing Sysinternals tools..."
 Expand-Archive .\SysinternalsSuite.zip -DestinationPath .\SysinternalsSuite -Force
