@@ -10,7 +10,7 @@ TODO
 - sslscan (2.0.15)
 - nmap (7.92)
 - SysinternalsSuite (Aug 16 2022)
-- BurpSuite Professional (2022.8.4)
+- BurpSuite Professional (2022.12.5)
 - Wireshark (3.6.8)
 - npcap (1.71)
 

@@ -41,7 +41,7 @@
         "extender":{
             "extensions":[
                 {
-                    "bapp_serial_version":3,
+                    "bapp_serial_version":5,
                     "bapp_uuid":"444407b96d9c4de0adb7aed89e826122",
                     "errors":"ui",
                     "extension_file":"bapps\\444407b96d9c4de0adb7aed89e826122\\403Bypasser.py",
@@ -51,23 +51,13 @@
                     "output":"ui"
                 },
                 {
-                    "bapp_serial_version":25,
+                    "bapp_serial_version":26,
                     "bapp_uuid":"3123d5b5f25c4128894d97ea1acc4976",
                     "errors":"ui",
                     "extension_file":"bapps\\3123d5b5f25c4128894d97ea1acc4976\\activeScan++.py",
                     "extension_type":"python",
                     "loaded":true,
                     "name":"Active Scan++",
-                    "output":"ui"
-                },
-                {
-                    "bapp_serial_version":36,
-                    "bapp_uuid":"aaaa60ef945341e8a450217a54a11646",
-                    "errors":"ui",
-                    "extension_file":"bapps\\aaaa60ef945341e8a450217a54a11646\\build\\libs\\http-request-smuggler-all.jar",
-                    "extension_type":"java",
-                    "loaded":true,
-                    "name":"HTTP Request Smuggler",
                     "output":"ui"
                 },
                 {
@@ -81,7 +71,7 @@
                     "output":"ui"
                 },
                 {
-                    "bapp_serial_version":20,
+                    "bapp_serial_version":21,
                     "bapp_uuid":"9cff8c55432a45808432e26dbb2b41d8",
                     "errors":"ui",
                     "extension_file":"bapps\\9cff8c55432a45808432e26dbb2b41d8\\build\\libs\\backslash-powered-scanner-all.jar",
@@ -121,6 +111,16 @@
                     "output":"ui"
                 },
                 {
+                    "bapp_serial_version":37,
+                    "bapp_uuid":"aaaa60ef945341e8a450217a54a11646",
+                    "errors":"ui",
+                    "extension_file":"bapps\\aaaa60ef945341e8a450217a54a11646\\build\\libs\\http-request-smuggler-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"HTTP Request Smuggler",
+                    "output":"ui"
+                },
+                {
                     "bapp_serial_version":6,
                     "bapp_uuid":"7ec6d429fed04cdcb6243d8ba7358880",
                     "errors":"ui",
@@ -151,7 +151,7 @@
                     "output":"ui"
                 },
                 {
-                    "bapp_serial_version":24,
+                    "bapp_serial_version":25,
                     "bapp_uuid":"17d2949a985c4b7ca092728dba871943",
                     "errors":"ui",
                     "extension_file":"bapps\\17d2949a985c4b7ca092728dba871943\\build\\libs\\param-miner-all.jar",
