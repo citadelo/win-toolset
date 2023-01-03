@@ -3,17 +3,19 @@ $toolset_url = "https://github.com/citadelo/win-toolset/archive/refs/heads/main.
 $burp_url = "https://github.com/citadelo/win-toolset/releases/download/v0.1/burpsuite_pro.exe"
 $toolset_path = "$citadelo_path\win-toolset-main"
 $ErrorActionPreference = "Stop"
-$ProgressPreference = "SilentlyContinue"
 if (!(Test-Path $citadelo_path)) {
     echo "Setting up citadelo dir..."
     mkdir $citadelo_path | Out-Null
+    icacls $citadelo_path /inheritancelevel:e /q /c /t /grant Users:F
 }
+echo "Asking for domain credentials"
+$cred = Get-Credential -UserName "domain\user" -Message "Enter your VDI credentials to continue in the format domain\user"
 cd $citadelo_path
 echo "Downloading tools and extracting..."
-wget $toolset_url -outfile .\main.zip
+Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip -Destination ''C:\Program Files\citadelo\main.zip''}"'
 Expand-Archive .\main.zip -DestinationPath .\ -Force
 cd $toolset_path\tools
-wget $burp_url -outfile .\burpsuite_pro.exe
+Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/releases/download/v0.1/burpsuite_pro.exe -Destination ''C:\Program Files\citadelo\win-toolset-main\tools\burpsuite_pro.exe''}"'
 echo "Installing Sysinternals tools..."
 Expand-Archive .\SysinternalsSuite.zip -DestinationPath .\SysinternalsSuite -Force
 echo "Installing nmap..."
@@ -40,7 +42,7 @@ Start-Process wsl.exe -ArgumentList "--install -d kali-linux" -NoNewWindow -Wait
 echo "WSL2 installed, reboot may be needed!"
 cd $toolset_path/bin
 echo "Installing nuclei templates..."
-Start-Process .\nuclei.exe -ArgumentList "-ut -silent" -NoNewWindow -Wait
+Start-Process .\nuclei.exe -Credential $cred -ArgumentList "-ut -silent" -NoNewWindow -Wait
 if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     echo "Setting up PATH..."
     $Env:PATH > "C:\Users\Public\Env_Path.bak"

@@ -3,12 +3,7 @@ Windows box toolset installation script
 
 ## How to run:
 
-Currently Zscaler blocks downloading of setup script, so it needs to be copied from Github, pasted into Notepad and stored locally.
-
-- copy setup.ps1 script from https://github.com/citadelo/win-toolset/blob/main/setup.ps1
-- paste into Notepad and save onto disk
-- open PowerShell as admin (support user)
-- run script via `.\setup.ps1` with admin privileges
+TODO
 
 ## Current list of installed tools:
 - ffuf (1.5.0)
