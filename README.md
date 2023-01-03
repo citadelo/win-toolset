@@ -13,8 +13,6 @@ TODO
 - BurpSuite Professional (2022.8.4)
 - Wireshark (3.6.8)
 - npcap (1.71)
-- WSL 2
-- nuclei (2.7.8)
 
 ## Current list of Burp Suite extensions:
 - 403 Bypasser
