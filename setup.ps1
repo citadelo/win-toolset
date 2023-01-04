@@ -1,5 +1,6 @@
 $citadelo_path = "C:\Program Files\citadelo"
 $toolset_path = "$citadelo_path\win-toolset-main"
+$burp_path = "C:\Users\USR\AppData\Roaming\BurpSuite"
 $ErrorActionPreference = "Stop"
 echo "Asking for domain credentials"
 $cred = Get-Credential -UserName "domain\user" -Message "Enter your VDI credentials to continue in the domain\user format"
@@ -12,7 +13,7 @@ echo "Downloading tools and extracting..."
 Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip -Destination C:\Temp\main.zip}"'
 Expand-Archive C:\Temp\main.zip -DestinationPath .\ -Force
 cd $toolset_path\tools
-Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/releases/download/v0.2/burpsuite_pro.exe -Destination C:\Temp\burpsuite_pro.exe}"'
+Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source ''https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.12.5&type=WindowsX64'' -Destination C:\Temp\burpsuite_pro.exe}"'
 mv C:\Temp\burpsuite_pro.exe .\
 echo "Installing Sysinternals tools..."
 Expand-Archive .\SysinternalsSuite.zip -DestinationPath .\SysinternalsSuite -Force
@@ -27,19 +28,25 @@ Start-Process .\npcap.exe -NoNewWindow -Wait
 echo "BurpSuite needs to be installed via GUI!"
 echo "Starting BurpSuite installer..."
 Start-Process .\burpsuite_pro.exe -NoNewWindow -Wait
-if (!(Test-Path C:\Users\support\AppData\Roaming\BurpSuite)) {
-    $burp_path = "C:\Users\support\AppData\Roaming\BurpSuite"
-    mkdir $burp_path | Out-Null
+$burp_support = $burp_path.replace("USR", "support")
+$burp_regular = $burp_path.replace("USR", $cred.username.split("\")[1])
+if (!(Test-Path $burp_support)) {
+    mkdir $burp_support | Out-Null
+}
+if (!(Test-Path $burp_regular)) {
+    mkdir $burp_regular | Out-Null
 }
 cd $toolset_path\config
-cp .\UserConfigPro.json $burp_path\ -Force
-cp .\bapps\ $burp_path\ -Recurse -Force
+cp .\UserConfigPro.json $burp_support\ -Force
+cp .\bapps\ $burp_support\ -Recurse -Force
+cp .\UserConfigPro.json $burp_regular\ -Force
+cp .\bapps\ $burp_regular\ -Recurse -Force
 echo "BurpSuite installed!"
 # TODO: there are problems with WSL right now, can't download distribution
 #echo "Installing WSL2..."
 #Start-Process wsl.exe -ArgumentList "--install -d kali-linux" -NoNewWindow -Wait
 #echo "WSL2 installed, reboot may be needed!"
-cd $toolset_path/bin
+cd $citadelo_path
 # TODO: there are problems with nuclei, it's flagged by AV
 #echo "Installing nuclei templates..."
 #Start-Process .\nuclei.exe -Credential $cred -ArgumentList "-ut -silent" -NoNewWindow -Wait
