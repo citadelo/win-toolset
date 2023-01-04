@@ -2,18 +2,47 @@ $citadelo_path = "C:\Program Files\citadelo"
 $toolset_path = "$citadelo_path\win-toolset-main"
 $burp_path = "C:\Users\USR\AppData\Roaming\BurpSuite"
 $ErrorActionPreference = "Stop"
+
 echo "Asking for domain credentials"
-$cred = Get-Credential -UserName "domain\user" -Message "Enter your VDI credentials to continue in the domain\user format"
+$cred = Get-Credential -UserName "domain\user" -Message "Enter your VDI credentials to continue in the domain\user format."
+
 if (!(Test-Path $citadelo_path)) {
     echo "Setting up citadelo dir..."
     mkdir $citadelo_path | Out-Null
 }
 cd $citadelo_path
 echo "Downloading tools and extracting..."
-Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip -Destination C:\Temp\main.zip}"'
+$repo = $false
+$burp = $false
+$attempt = 1
+do {
+    if (!$repo) {
+        Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip -Destination C:\Temp\main.zip}"'
+    }
+    if (!$burp) {
+        if ($attempt -le 2) {
+            Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source ''https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.12.5&type=WindowsX64'' -Destination C:\Temp\burpsuite_pro.exe}"'
+        } else {
+            # fallback in case download from portswigger fails for some reason
+            Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/releases/download/v0.2/burpsuite_pro.exe -Destination C:\Temp\burpsuite_pro.exe}"'
+        }
+    }
+    $repo = (Test-Path "C:\Temp\main.zip")
+    $burp = (Test-Path "C:\Temp\burpsuite_pro.exe")
+    if (!$repo -or !$burp) {
+        $attempt++
+        echo "Download of some required files failed, I will wait 30 seconds and try again."
+        Start-Sleep -s 30
+    }
+} while ((!$repo -or !$burp) -and ($attempt -le 4))
+
+if (!$repo -or !$burp) {
+    echo "Can't download files, terminating the script."
+    exit
+}
+
 Expand-Archive C:\Temp\main.zip -DestinationPath .\ -Force
 cd $toolset_path\tools
-Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source ''https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.12.5&type=WindowsX64'' -Destination C:\Temp\burpsuite_pro.exe}"'
 mv C:\Temp\burpsuite_pro.exe .\
 echo "Installing Sysinternals tools..."
 Expand-Archive .\SysinternalsSuite.zip -DestinationPath .\SysinternalsSuite -Force
@@ -50,6 +79,7 @@ cd $citadelo_path
 # TODO: there are problems with nuclei, it's flagged by AV
 #echo "Installing nuclei templates..."
 #Start-Process .\nuclei.exe -Credential $cred -ArgumentList "-ut -silent" -NoNewWindow -Wait
+
 if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     echo "Setting up PATH..."
     $Env:PATH > "C:\Users\Public\Env_Path.bak"
