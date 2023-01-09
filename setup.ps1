@@ -20,7 +20,7 @@ do {
         Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip -Destination C:\Temp\main.zip}"'
     }
     if (!$burp) {
-        if ($attempt -le 2) {
+        if ($attempt -le 3) {
             Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source ''https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.12.5&type=WindowsX64'' -Destination C:\Temp\burpsuite_pro.exe}"'
         } else {
             # fallback in case download from portswigger fails for some reason
@@ -34,7 +34,7 @@ do {
         echo "Download of some required files failed, I will wait 30 seconds and try again."
         Start-Sleep -s 30
     }
-} while ((!$repo -or !$burp) -and ($attempt -le 4))
+} while ((!$repo -or !$burp) -and ($attempt -le 6))
 
 if (!$repo -or !$burp) {
     echo "Can't download files, terminating the script."
