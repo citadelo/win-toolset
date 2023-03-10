@@ -12,38 +12,26 @@ if (!(Test-Path $citadelo_path)) {
 }
 cd $citadelo_path
 echo "Downloading tools and extracting..."
-$repo = $false
-$burp = $false
-$attempt = 1
+
+$user=$cred.username.split("\")[1]
+Start-Process 'C:\Program Files\Google\Chrome\Application\chrome.exe' -Wait -Credential $cred -ArgumentList 'https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.12.5&type=WindowsX64'
+$downloaded = $false
 do {
-    if (!$repo) {
-        Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip -Destination C:\Temp\main.zip}"'
-    }
-    if (!$burp) {
-        if ($attempt -le 3) {
-            Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source ''https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.12.5&type=WindowsX64'' -Destination C:\Temp\burpsuite_pro.exe}"'
-        } else {
-            # fallback in case download from portswigger fails for some reason
-            Start-Process powershell.exe -Wait -Credential $cred -ArgumentList '-Command "& {Start-BitsTransfer -Source https://github.com/citadelo/win-toolset/releases/download/v0.2/burpsuite_pro.exe -Destination C:\Temp\burpsuite_pro.exe}"'
-        }
-    }
-    $repo = (Test-Path "C:\Temp\main.zip")
-    $burp = (Test-Path "C:\Temp\burpsuite_pro.exe")
-    if (!$repo -or !$burp) {
-        $attempt++
-        echo "Download of some required files failed, I will wait 30 seconds and try again."
-        Start-Sleep -s 30
-    }
-} while ((!$repo -or !$burp) -and ($attempt -le 6))
+    $downloaded = (Test-Path "C:\Users\$user\Downloads\burpsuite_pro_windows*.exe")
+    Start-Sleep -s 5
+} while (!$downloaded)
 
-if (!$repo -or !$burp) {
-    echo "Can't download files, terminating the script."
-    exit
-}
+Start-Process 'C:\Program Files\Google\Chrome\Application\chrome.exe' -Wait -Credential $cred -ArgumentList 'https://github.com/citadelo/win-toolset/archive/refs/heads/main.zip'
+$downloaded = $false
+do {
+    $downloaded = (Test-Path "C:\Users\$user\Downloads\win-toolset-main.zip")
+    Start-Sleep -s 5
+} while (!$downloaded)
 
-Expand-Archive C:\Temp\main.zip -DestinationPath .\ -Force
+mv "C:\Users\$user\Downloads\burpsuite_pro_windows*.exe" .\burpsuite_pro.exe
+Expand-Archive "C:\Users\$user\Downloads\win-toolset-main.zip" -DestinationPath .\ -Force
+
 cd $toolset_path\tools
-mv C:\Temp\burpsuite_pro.exe .\
 echo "Installing Sysinternals tools..."
 Expand-Archive .\SysinternalsSuite.zip -DestinationPath .\SysinternalsSuite -Force
 echo "Installing nmap..."
@@ -58,7 +46,7 @@ echo "BurpSuite needs to be installed via GUI!"
 echo "Starting BurpSuite installer..."
 Start-Process .\burpsuite_pro.exe -NoNewWindow -Wait
 $burp_support = $burp_path.replace("USR", "support")
-$burp_regular = $burp_path.replace("USR", $cred.username.split("\")[1])
+$burp_regular = $burp_path.replace("USR", $user)
 if (!(Test-Path $burp_support)) {
     mkdir $burp_support | Out-Null
 }
