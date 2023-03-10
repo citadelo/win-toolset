@@ -28,7 +28,7 @@ do {
     Start-Sleep -s 5
 } while (!$downloaded)
 
-mv "C:\Users\$user\Downloads\burpsuite_pro_windows*.exe" .\burpsuite_pro.exe
+mv "C:\Users\$user\Downloads\burpsuite_pro_windows*.exe" .\burp_pro.exe
 Expand-Archive "C:\Users\$user\Downloads\win-toolset-main.zip" -DestinationPath .\ -Force
 
 cd $toolset_path\tools
@@ -59,14 +59,7 @@ cp .\bapps\ $burp_support\ -Recurse -Force
 cp .\UserConfigPro.json $burp_regular\ -Force
 cp .\bapps\ $burp_regular\ -Recurse -Force
 echo "BurpSuite installed!"
-# TODO: there are problems with WSL right now, can't download distribution
-#echo "Installing WSL2..."
-#Start-Process wsl.exe -ArgumentList "--install -d kali-linux" -NoNewWindow -Wait
-#echo "WSL2 installed, reboot may be needed!"
 cd $citadelo_path
-# TODO: there are problems with nuclei, it's flagged by AV
-#echo "Installing nuclei templates..."
-#Start-Process .\nuclei.exe -Credential $cred -ArgumentList "-ut -silent" -NoNewWindow -Wait
 
 if(!(select-string -pattern "citadelo" -InputObject $Env:PATH)) {
     echo "Setting up PATH..."
