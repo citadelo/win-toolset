@@ -28,7 +28,7 @@ do {
     Start-Sleep -s 5
 } while (!$downloaded)
 
-mv "C:\Users\$user\Downloads\burpsuite_pro_windows*.exe" .\burp_pro.exe
+mv "C:\Users\$user\Downloads\burpsuite_pro_windows*.exe" .\burpsuite_pro.exe
 Expand-Archive "C:\Users\$user\Downloads\win-toolset-main.zip" -DestinationPath .\ -Force
 
 cd $toolset_path\tools
