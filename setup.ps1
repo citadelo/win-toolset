@@ -44,7 +44,7 @@ echo "Npcap needs to be installed via GUI!"
 Start-Process .\npcap.exe -NoNewWindow -Wait
 echo "BurpSuite needs to be installed via GUI!"
 echo "Starting BurpSuite installer..."
-Start-Process .\burpsuite_pro.exe -NoNewWindow -Wait
+Start-Process "$citadelo_path.\burpsuite_pro.exe" -NoNewWindow -Wait
 $burp_support = $burp_path.replace("USR", "support")
 $burp_regular = $burp_path.replace("USR", $user)
 if (!(Test-Path $burp_support)) {
