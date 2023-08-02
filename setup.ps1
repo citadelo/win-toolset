@@ -14,7 +14,7 @@ cd $citadelo_path
 echo "Downloading tools and extracting..."
 
 $user=$cred.username.split("\")[1]
-Start-Process 'C:\Program Files\Google\Chrome\Application\chrome.exe' -Credential $cred -ArgumentList 'https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.12.5&type=WindowsX64'
+Start-Process 'C:\Program Files\Google\Chrome\Application\chrome.exe' -Credential $cred -ArgumentList 'https://portswigger-cdn.net/burp/releases/download?product=pro&version=2023.7.2&type=WindowsX64'
 $downloaded = $false
 do {
     $downloaded = (Test-Path "C:\Users\$user\Downloads\burpsuite_pro_windows*.exe")
